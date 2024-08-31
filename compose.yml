@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  server1:
+    image: alpine_server
+    container_name: server1
+    volumes:
+      - ./scripts:/app/scripts
+  server2:
+    image: alpine_server
+    container_name: server2
+    volumes:
+      - ./scripts:/app/scripts
