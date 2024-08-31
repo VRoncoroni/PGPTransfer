@@ -1,6 +1,5 @@
 #!/bin/sh
 
-# Nom de l'utilisateur dédié pour la génération des clés
 USER_NAME="pgpuser"
 USER_HOME="/home/$USER_NAME"
 KEY_NAME="SFTP Key"
@@ -8,10 +7,9 @@ KEY_COMMENT="pgpuser@$(hostname)"
 KEY_EMAIL="pgpuser@$(hostname)"
 KEY_TYPE="RSA"
 KEY_LENGTH="4096"
-KEY_EXPIRE="1y"  # 1 ans d'expiration, ajustez selon vos besoins
-KEY_PASSPHRASE="strong-passphrase"  # Remplacez par une passphrase robuste
+KEY_EXPIRE="1y"
+KEY_PASSPHRASE="strong-passphrase"
 
-# Fonction pour générer un utilisateur spécifique
 create_user() {
     if id "$USER_NAME" &>/dev/null; then
         echo "L'utilisateur $USER_NAME existe déjà."
@@ -21,7 +19,6 @@ create_user() {
     fi
 }
 
-# Fonction pour générer une clé PGP
 generate_pgp_key() {
     echo "Génération de la clé PGP pour l'utilisateur $USER_NAME..."
 
@@ -37,14 +34,12 @@ Passphrase: $KEY_PASSPHRASE
 EOF
 }
 
-# Fonction pour exporter la clé publique
 export_public_key() {
     echo "Exportation de la clé publique..."
     sudo -u $USER_NAME gpg --armor --export "$KEY_EMAIL" > $USER_HOME/public_key.asc
     echo "Clé publique exportée dans $USER_HOME/public_key.asc"
 }
 
-# Exécution des fonctions
 create_user
 generate_pgp_key
 export_public_key
